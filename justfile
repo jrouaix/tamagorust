@@ -6,6 +6,9 @@ build_debug:
 build_release:
     ./scripts/build.sh
 
+flash_mon: build_debug
+    espflash flash target/xtensa-esp32-espidf/debug/tama --monitor
+
 flash_debug: build_debug
     espflash flash target/xtensa-esp32-espidf/debug/tama
 
