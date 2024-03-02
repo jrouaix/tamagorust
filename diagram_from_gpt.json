@@ -1,0 +1,133 @@
+{
+    "version": 1,
+    "editor": "wokwi",
+    "author": "jrx <jerome@rouaix.eu>",
+    "attributes": {
+        "name": "M5StickC PLUS Project",
+        "description": "A simulation of the M5StickC PLUS ESP32-PICO Mini IoT Development Kit."
+    },
+    "parts": [
+        {
+            "type": "board-esp32-devkit-c-v4",
+            "id": "esp",
+            "top": 0.59,
+            "left": 0.67,
+            "attrs": {
+                "flashSize": "16",
+                "variant": "ESP32-PICO-D4"
+            }
+        },
+        {
+            "id": "lcd",
+            "type": "st7789v2",
+            "attrs": {
+                "width": "135",
+                "height": "240"
+            }
+        },
+        {
+            "id": "buttonA",
+            "type": "button"
+        },
+        {
+            "id": "buttonB",
+            "type": "button"
+        },
+        {
+            "id": "led",
+            "type": "led",
+            "attrs": {
+                "color": "red"
+            }
+        },
+        {
+            "id": "buzzer",
+            "type": "buzzer"
+        },
+        {
+            "id": "mic",
+            "type": "microphone",
+            "attrs": {
+                "model": "SPM1423"
+            }
+        }
+    ],
+    "connections": [
+        [
+            "esp:TX",
+            "$serialMonitor:RX",
+            "",
+            []
+        ],
+        [
+            "esp:RX",
+            "$serialMonitor:TX",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:3V3",
+            "lcd:VCC",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GND",
+            "lcd:GND",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO23",
+            "lcd:SCL",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO18",
+            "lcd:SDA",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO5",
+            "lcd:RES",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO4",
+            "lcd:DC",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO2",
+            "ledRed:anode",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GND",
+            "ledRed:cathode",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO0",
+            "buttonA:pin1",
+            "",
+            []
+        ],
+        [
+            "esp32Pico:GPIO35",
+            "buttonB:pin1",
+            "",
+            []
+        ]
+    ],
+    "serialMonitor": {
+        "display": "terminal",
+        "convertEol": true
+    }
+}
