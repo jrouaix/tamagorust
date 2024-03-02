@@ -11,6 +11,15 @@
             "attrs": {
                 "flashSize": "16"
             }
+        },
+        {
+            "id": "led",
+            "type": "wokwi-led",
+            "left": 120,
+            "top": 0,
+            "attrs": {
+                "color": "red"
+            }
         }
     ],
     "connections": [
@@ -23,6 +32,18 @@
         [
             "esp:RX",
             "$serialMonitor:TX",
+            "",
+            []
+        ],
+        [
+            "esp:GPI10",
+            "led:A",
+            "",
+            []
+        ],
+        [
+            "esp:GND",
+            "led:C",
             "",
             []
         ]

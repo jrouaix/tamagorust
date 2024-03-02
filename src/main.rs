@@ -1,10 +1,6 @@
+use esp_idf_hal::gpio::PinDriver;
+use esp_idf_hal::peripherals::Peripherals;
 use std::{thread::sleep, time::Duration};
-// use esp_idf_hal::peripherals::Peripherals;
-// use esp_idf_svc::{
-//   eventloop::EspSystemEventLoop,
-//   nvs::EspDefaultNvsPartition,
-//   wifi::{AuthMethod, ClientConfiguration, Configuration, EspWifi},
-// };
 
 fn main() -> anyhow::Result<()> {
   // It is necessary to call this function once. Otherwise some patches to the runtime
@@ -16,14 +12,31 @@ fn main() -> anyhow::Result<()> {
 
   log::info!("Hello, world!");
 
+  let peripherals = Peripherals::take()?;
+  let mut led = PinDriver::output(peripherals.pins.gpio10)?;
+
   loop {
-    log::info!("LOOP");
+    log::info!("LED ON");
+    led.set_high()?;
+    sleep(Duration::from_secs(1));
+
+    log::info!("LED OFF");
+    led.set_low()?;
     sleep(Duration::from_secs(1));
   }
 
-  // // Configure Wifi
-  // let peripherals = Peripherals::take().unwrap();
+  //   use esp_idf_svc::{
+  //   eventloop::EspSystemEventLoop,
+  //   nvs::EspDefaultNvsPartition,
+  //   wifi::{AuthMethod, ClientConfiguration, Configuration, EspWifi},
+  // };
   // let sysloop = EspSystemEventLoop::take()?;
+
+  // loop {
+  //   log::info!("LOOP");
+  //   sleep(Duration::from_secs(1));
+  // }
+
   // let nvs = EspDefaultNvsPartition::take()?;
 
   // let mut wifi = EspWifi::new(peripherals.modem, sysloop, Some(nvs))?;
