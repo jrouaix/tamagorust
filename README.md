@@ -1,6 +1,14 @@
 # tamagorust
 Try embeded rust on m5 stick
 
+## Some commands
+
+- `just`
+- `screen /dev/ttyUSB0 115200` (Ctrl + A, K to exit)
+- `minicom -D /dev/ttyUSB0 -b 115200` (Ctrl + A, X to exit)
+- `ls /dev/ttyUSB*` (to check if device plugged, and find the correct port)
+
+
 ## Resources
 - https://github.com/esp-rs/esp-idf-template/
 - cargo generate esp-rs/esp-idf-template cargo

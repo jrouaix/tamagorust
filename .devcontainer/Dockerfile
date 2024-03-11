@@ -14,6 +14,7 @@ ARG GITHUB_TOKEN
 RUN apt-get update \
     && apt-get install -y pkg-config curl gcc clang libudev-dev unzip xz-utils \
     git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0 \
+    bash-completion minicom screen \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # Set users
