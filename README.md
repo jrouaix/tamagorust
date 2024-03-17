@@ -19,3 +19,13 @@ Try embeded rust on m5 stick
 - 
 
 
+
+## Steps
+- [ ] Run embassy no-std
+- [ ] Have a blinking led
+- [ ] Have all buttons working
+- [ ] Have the screen working
+- [ ] Have sound working
+- [ ] Have accelerometer working
+- [ ] Build a Simon game
+- [ ] ...
