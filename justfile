@@ -13,7 +13,7 @@ build_release:
 
 # Build, Flash & Monitor the debug firmware
 flash_mon: build_debug
-    espflash flash target/xtensa-esp32-espidf/debug/tama --monitor # --list-all-ports
+    espflash flash target/xtensa-esp32-espidf/debug/tama --monitor --list-all-ports
 
 # Build & Flash the debug firmware
 flash_debug: build_debug

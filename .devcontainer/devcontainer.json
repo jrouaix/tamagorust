@@ -46,7 +46,8 @@
     8000
   ],
   "runArgs": [
-    "--device=/dev/ttyUSB0:/dev/ttyUSB0"
+    "--device=/dev/ttyUSB0:/dev/ttyUSB0",
+    "--group-add=dialout"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/home/esp/tama,type=bind,consistency=cached",
   "workspaceFolder": "/home/esp/tama"
