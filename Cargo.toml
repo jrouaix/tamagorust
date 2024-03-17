@@ -13,30 +13,61 @@ opt-level = "s"
 debug = true    # Symbols are nice and they don't increase the size on Flash
 opt-level = "z"
 
-[features]
-default = ["std", "embassy", "esp-idf-svc/native"]
-
-pio = ["esp-idf-svc/pio"]
-std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
-alloc = ["esp-idf-svc/alloc"]
-nightly = ["esp-idf-svc/nightly"]
-experimental = ["esp-idf-svc/experimental"]
-embassy = [
-    "esp-idf-svc/embassy-sync",
-    "esp-idf-svc/critical-section",
-    "esp-idf-svc/embassy-time-driver",
-]
-
 [dependencies]
-anyhow = "1.0"
-heapless = "0.8"
+
+defmt = "0.3"
+defmt-rtt = "0.4"
+
+# Embassy
+embassy-executor = { version = "0.5", default-features = false }
+embassy-sync = { version = "0.5", default-features = false, features = [
+    "defmt",
+] }
+embassy-time = { version = "0.3", default-features = false, features = [
+    "defmt",
+    "defmt-timestamp-uptime",
+    "tick-hz-8",              # very low
+] }
+embassy-net = { version = "0.4", default-features = false }
+
+# Hardware Abstraction Layer
+embedded-hal = { version = "1", default-features = false }
+embedded-hal-async = { version = "1", default-features = false }
+embedded-hal-bus = { version = "0.1", default-features = false }
+embedded-io-async = { version = "0.6", default-features = false }
+
+# ESP specifics
+esp-hal = { version = "0.16", default-features = false }
+esp-backtrace = { version = "0.11", default-features = false }
+esp-println = { version = "0.9", default-features = false }
+esp-wifi = { version = "0.4", default-features = false }
+
+# Logging
 log = { version = "0.4", default-features = false }
-esp-idf-svc = { version = "0.48", default-features = false }
+
 esp-idf-hal = "0.43"
 mipidsi = "0.7"
 display-interface-spi = "0.5"
-embedded-hal = "1.0.0"
+
 embedded-graphics = "0.8"
+
+# embassy-executor = { version = "0.5", features = [
+#     "arch-cortex-m",
+#     "executor-thread",
+#     "defmt",
+#     "integrated-timers",
+# ] }
+# embassy-time = { version = "0.3", features = [
+#     "defmt",
+#     "defmt-timestamp-uptime",
+#     "tick-hz-32_768",
+# ] }
+
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+futures = { version = "0.3.17", default-features = false, features = [
+    "async-await",
+] }
+heapless = { version = "0.8", default-features = false }
 
 [build-dependencies]
 embuild = "0.31.3"

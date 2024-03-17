@@ -1,8 +1,27 @@
+use defmt::info;
+use embassy_executor::Spawner;
+use embassy_time::{Duration, Timer};
 use esp_idf_hal::gpio::PinDriver;
 use esp_idf_hal::peripherals::Peripherals;
 use std::{thread::sleep, time::Duration};
 
-fn main() -> anyhow::Result<()> {
+// Declare async tasks
+#[embassy_executor::task]
+async fn blink(pin: AnyPin) {
+  let mut led = Output::new(pin, Level::Low, OutputDrive::Standard);
+
+  loop {
+    // Timekeeping is globally available, no need to mess with hardware timers.
+    led.set_high();
+    Timer::after_millis(150).await;
+    led.set_low();
+    Timer::after_millis(150).await;
+  }
+}
+
+// Main is itself an async task as well.
+#[embassy_executor::main]
+async fn main(spawner: Spawner) {
   // It is necessary to call this function once. Otherwise some patches to the runtime
   // implemented by esp-idf-sys might not link properly. See https://github.com/esp-rs/esp-idf-template/issues/71
   esp_idf_svc::sys::link_patches();
@@ -10,57 +29,19 @@ fn main() -> anyhow::Result<()> {
   // Bind the log crate to the ESP Logging facilities
   esp_idf_svc::log::EspLogger::initialize_default();
 
-  log::info!("Hello, world!");
-
   let peripherals = Peripherals::take()?;
   let mut led = PinDriver::output(peripherals.pins.gpio10)?;
 
+  // Spawned tasks run in the background, concurrently.
+  spawner.spawn(blink(led.degrade())).unwrap();
+
+  let mut button = Input::new(p.P0_11, Pull::Up);
   loop {
-    log::info!("LED ON");
-    led.set_high()?;
-    sleep(Duration::from_secs(1));
-
-    log::info!("LED OFF");
-    led.set_low()?;
-    sleep(Duration::from_secs(1));
+    // Asynchronously wait for GPIO events, allowing other tasks
+    // to run, or the core to sleep.
+    button.wait_for_low().await;
+    info!("Button pressed!");
+    button.wait_for_high().await;
+    info!("Button released!");
   }
-
-  //   use esp_idf_svc::{
-  //   eventloop::EspSystemEventLoop,
-  //   nvs::EspDefaultNvsPartition,
-  //   wifi::{AuthMethod, ClientConfiguration, Configuration, EspWifi},
-  // };
-  // let sysloop = EspSystemEventLoop::take()?;
-
-  // loop {
-  //   log::info!("LOOP");
-  //   sleep(Duration::from_secs(1));
-  // }
-
-  // let nvs = EspDefaultNvsPartition::take()?;
-
-  // let mut wifi = EspWifi::new(peripherals.modem, sysloop, Some(nvs))?;
-
-  // wifi.set_configuration(&Configuration::Client(ClientConfiguration {
-  //   ssid: "NOPE".parse().unwrap(),
-  //   password: "NOPE".parse().unwrap(),
-  //   auth_method: AuthMethod::None,
-  //   ..Default::default()
-  // }))?;
-
-  // // Start Wifi
-  // wifi.start()?;
-
-  // // Connect Wifi
-  // wifi.connect()?;
-
-  // // Confirm Wifi Connection
-  // while !wifi.is_connected().unwrap() {
-  //   // Get and print connection configuration
-  //   let config = wifi.get_configuration().unwrap();
-  //   println!("Waiting for station {:?}", config);
-  // }
-
-  // println!("Connected");
-  // Ok(())
 }
