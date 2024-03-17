@@ -36,6 +36,8 @@ embassy = [
 
 [dependencies]
 log = { version = "0.4", default-features = false }
+defmt = "0.3"
+defmt-rtt = "0.4"
 
 # ESP IDF
 esp-idf-svc = { version = "0.48", default-features = false }
@@ -46,6 +48,12 @@ embedded-hal = { version = "1", default-features = false }
 
 # Embassy
 embassy-executor = { version = "0.5", default-features = false }
+embassy-time = { version = "0.3.0", default-features = false, features = [
+    "defmt",
+    "defmt-timestamp-uptime",
+    # "tick-hz-8",              # Very low tick rate
+] }
+
 
 [build-dependencies]
 embuild = "0.31.3"
