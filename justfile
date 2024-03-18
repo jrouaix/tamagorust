@@ -5,20 +5,20 @@ _default:
 
 # Build the debug version of the firmware
 build_debug:
-    ./scripts/build.sh "debug"
+  cargo build
 
 # Build the release version of the firmware
 build_release:
-    ./scripts/build.sh
+  cargo build --release
 
 # Build, Flash & Monitor the debug firmware
 flash_mon: build_debug
-    espflash flash target/xtensa-esp32-espidf/debug/tama --monitor # --list-all-ports
+  espflash flash target/xtensa-esp32-espidf/debug/tama --monitor --list-all-ports
 
 # Build & Flash the debug firmware
 flash_debug: build_debug
-    espflash flash target/xtensa-esp32-espidf/debug/tama
+  espflash flash target/xtensa-esp32-espidf/debug/tama
 
 # Build & Flash the debug firmware with webflash
 webflash_debug: build_debug
-    web-flash --chip esp32 target/xtensa-esp32-espidf/debug/tama
+  web-flash --chip esp32 target/xtensa-esp32-espidf/debug/tama
