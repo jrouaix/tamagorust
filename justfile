@@ -22,3 +22,7 @@ flash_debug: build_debug
 # Build & Flash the debug firmware with webflash
 webflash_debug: build_debug
   web-flash --chip esp32 target/xtensa-esp32-espidf/debug/tama
+
+# Plug minicom to the device
+minicom:
+  minicom -D /dev/ttyUSB0 -b 115200
