@@ -6,54 +6,76 @@ edition = "2021"
 resolver = "2"
 rust-version = "1.71"
 
+
 [profile.release]
-opt-level = "s"
+codegen-units = 1        # LLVM can perform better optimizations using a single thread
+debug = 2
+debug-assertions = false
+incremental = false
+lto = 'fat'
+opt-level = 's'
+overflow-checks = false
 
 [profile.dev]
 debug = true    # Symbols are nice and they don't increase the size on Flash
 opt-level = "z"
 
 [features]
-default = [
-    "alloc",
-    "embassy",
-    "esp-idf-svc/native",
-    "esp-idf-svc/panic_handler",
-    "esp-idf-svc/alloc_handler",
-    "esp-idf-svc/libstart",
-]
+# default = [
+#     "alloc",
+#     "embassy",
+#     "esp-idf-svc/native",
+#     "esp-idf-svc/panic_handler",
+#     "esp-idf-svc/alloc_handler",
+#     "esp-idf-svc/libstart",
+# ]
 
-pio = ["esp-idf-svc/pio"]
-std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
-alloc = ["esp-idf-svc/alloc"]
+# pio = ["esp-idf-svc/pio"]
+# std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
+# alloc = ["esp-idf-svc/alloc"]
 # nightly = ["esp-idf-svc/nightly"]
 # experimental = ["esp-idf-svc/experimental"]
-embassy = [
-    "esp-idf-svc/embassy-sync",
-    "esp-idf-svc/critical-section",
-    "esp-idf-svc/embassy-time-driver",
-]
+# embassy = [
+#     "esp-idf-svc/embassy-sync",
+#     "esp-idf-svc/critical-section",
+#     "esp-idf-svc/embassy-time-driver",
+# ]
 
 [dependencies]
 log = { version = "0.4", default-features = false }
-defmt = "0.3"
-defmt-rtt = "0.4"
+defmt = { version = "0.3", default-features = false }
+defmt-rtt = { version = "0.4", default-features = false }
 
 # ESP IDF
-esp-idf-svc = { version = "0.48", default-features = false }
-esp-idf-hal = { version = "0.43", default-features = false }
+# esp-idf-svc = { version = "0.48", default-features = false }
+# esp-idf-hal = { version = "0.43", default-features = false }
+
+# ESP HAL
+esp-hal = { version = "0.16", features = ["esp32"] }
+esp-println = { version = "0.9", features = ["esp32", "log"] }
+esp-alloc = { version = "0.3" }
 
 # Embedded
 embedded-hal = { version = "1", default-features = false }
+# panic-probe = { version = "0.3", default-features = false, features = [
+#     "print-defmt",
+# ] }
+futures = { version = "0.3.30", default-features = false, features = [
+    "async-await",
+] }
+heapless = { version = "0.8", default-features = false }
 
 # Embassy
 embassy-executor = { version = "0.5", default-features = false }
-embassy-time = { version = "0.3.0", default-features = false, features = [
+embassy-time = { version = "0.3", default-features = false, features = [
     "defmt",
     "defmt-timestamp-uptime",
     # "tick-hz-8",              # Very low tick rate
 ] }
+embassy-sync = { version = "0.5", default-features = false, features = [
+    "defmt",
+] }
 
 
 [build-dependencies]
-embuild = "0.31.3"
+# embuild = "0.31.3"
