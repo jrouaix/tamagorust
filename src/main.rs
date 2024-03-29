@@ -2,6 +2,8 @@ use esp_idf_hal::gpio::PinDriver;
 use esp_idf_hal::peripherals::Peripherals;
 use std::{thread::sleep, time::Duration};
 
+// use embassy_executor::raw::Executor;
+
 fn main() -> anyhow::Result<()> {
   // It is necessary to call this function once. Otherwise some patches to the runtime
   // implemented by esp-idf-sys might not link properly. See https://github.com/esp-rs/esp-idf-template/issues/71
@@ -14,6 +16,9 @@ fn main() -> anyhow::Result<()> {
 
   let peripherals = Peripherals::take()?;
   let mut led = PinDriver::output(peripherals.pins.gpio10)?;
+
+  // const plop: () = ();
+  // let executor = Executor::new(&mut plop);
 
   loop {
     log::info!("LED ON");
