@@ -1,47 +1,101 @@
-[package]
-name = "tama"
-version = "0.1.0"
-authors = ["jrx <jerome@rouaix.eu>"]
+[workspace.package]
 edition = "2021"
+version = "0.1.0"
+authors = ["jrx"]
+repository = "https://github.com/jrouaix/tamagorust"
+
+[workspace]
 resolver = "2"
-rust-version = "1.71"
+members = ["tama"]
+
+[workspace.dependencies]
+# aes                 = "0.8.4"
+cfg-if = "1.0"
+# critical-section    = "1.1.2"
+# crypto-bigint       = { version = "0.5.5", default-features = false }
+# elliptic-curve      = { version = "0.13.8", default-features = false, features = ["sec1"] }
+embassy-executor = { version = "0.5", features = ["task-arena-size-4096"] }
+embassy-sync = "0.5"
+embassy-time = { version = "0.3", features = ["generic-queue-8"] }
+embassy-time-driver = { version = "0.1" }                                   # , optional = true
+embedded-graphics = "0.8"
+embedded-hal = { verions = "1.0", features = ["esp32"] }
+# embedded-hal-02     = { version = "0.2.7", package = "embedded-hal", features = ["unproven"] }
+embedded-hal-async = "1.0"
+embedded-hal-bus = "0.1"
+embedded-io-async = "0.6"
+embedded-can = "0.4"
+esp-alloc = "0.3"
+esp-backtrace = { version = "0.11", features = [
+  "esp32",
+  "exception-handler",
+  "panic-handler",
+  "println",
+] }
+esp-hal = { version = "0.16", features = [
+  "esp32",
+  "async",
+  "embassy",
+  "embassy-executor-thread",
+  "embassy-executor-interrupt",
+  "embassy-time-timg0",
+  "log",
+] }
+esp-hal-smartled = { version = "0.9", feautures = ["esp32"] } # optional = true
+esp-println = { version = "0.9", features = ["esp32", "log"] }
+fugit = "0.3"
+heapless = "0.8"
+# hex-literal         = "0.4.1"
+# hmac                = { version = "0.12.1", default-features = false }
+# lis3dh-async        = "0.9.2"
+# nb                  = "1.1.0"
+# p192                = { version = "0.13.0", default-features = false, features = ["arithmetic"] }
+# p256                = { version = "0.13.2", default-features = false, features = ["arithmetic"] }
+# portable-atomic      = { version = "1.6.0", default-features = false }
+# sha2                = { version = "0.10.8", default-features = false}
+# smart-leds          = "0.4.0"
+# ssd1306             = "0.8.4"
+# static_cell         = { version = "2.0.0", features = ["nightly"] }
+# usb-device          = "0.3.2"
+# usbd-serial         = "0.2.1"
+log = "0.4"
+
+# [features]
+# esp32   = ["esp-hal/esp32",   "esp-backtrace/esp32",   "esp-println/esp32",   "esp-hal-smartled/esp32"]
+# esp32c2 = ["esp-hal/esp32c2", "esp-backtrace/esp32c2", "esp-println/esp32c2"]
+# esp32c3 = ["esp-hal/esp32c3", "esp-backtrace/esp32c3", "esp-println/esp32c3", "esp-hal-smartled/esp32c3"]
+# esp32c6 = ["esp-hal/esp32c6", "esp-backtrace/esp32c6", "esp-println/esp32c6", "esp-hal-smartled/esp32c6"]
+# esp32h2 = ["esp-hal/esp32h2", "esp-backtrace/esp32h2", "esp-println/esp32h2", "esp-hal-smartled/esp32h2"]
+# esp32p4 = ["esp-hal/esp32p4", "esp-backtrace/esp32p4", "esp-println/esp32p4"]
+# esp32s2 = ["esp-hal/esp32s2", "esp-backtrace/esp32s2", "esp-println/esp32s2", "esp-hal-smartled/esp32s2"]
+# esp32s3 = ["esp-hal/esp32s3", "esp-backtrace/esp32s3", "esp-println/esp32s3", "esp-hal-smartled/esp32s3"]
+
+# async = ["esp-hal/async"]
+
+# embedded-hal-02 = ["esp-hal/embedded-hal-02"]
+# embedded-hal = ["esp-hal/embedded-hal"]
+
+# embassy = ["esp-hal/embassy"]
+
+# embassy-executor-thread    = ["esp-hal/embassy-executor-thread"]
+# embassy-executor-interrupt = ["esp-hal/embassy-executor-interrupt"]
+
+# embassy-time-systick-16mhz = ["esp-hal/embassy-time-systick-16mhz"]
+# embassy-time-timg0 = ["esp-hal/embassy-time-timg0"]
+# embassy-generic-timers = ["embassy-time/generic-queue-8"]
+
+# opsram-2m = ["esp-hal/opsram-2m"]
+# psram-2m  = ["esp-hal/psram-2m"]
+
+# //% CHIPS: esp32 esp32c2 esp32c3 esp32c6 esp32h2 esp32s2 esp32s3
+# //% FEATURES: embassy embassy-time-timg0 embassy-executor-thread embassy-generic-timers
+
 
 [profile.release]
-opt-level = "s"
-
-[profile.dev]
-debug = true    # Symbols are nice and they don't increase the size on Flash
-opt-level = "z"
-
-[features]
-default = ["std", "embassy", "esp-idf-svc/native"]
-
-pio = ["esp-idf-svc/pio"]
-std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
-alloc = ["esp-idf-svc/alloc"]
-nightly = ["esp-idf-svc/nightly"]
-experimental = ["esp-idf-svc/experimental"]
-embassy = [
-    "esp-idf-svc/embassy-sync",
-    "esp-idf-svc/critical-section",
-    "esp-idf-svc/embassy-time-driver",
-]
-
-[dependencies]
-anyhow = "1.0"
-heapless = "0.8"
-log = { version = "0.4", default-features = false }
-esp-idf-svc = { version = "0.48", default-features = false }
-esp-idf-hal = "0.43"
-mipidsi = "0.7"
-display-interface-spi = "0.5"
-embedded-graphics = "0.8"
-
-# Embedded
-embedded-hal = { version = "1", default-features = false }
-
-# Embassy
-embassy-executor = { version = "0.5", default-features = false }
-
-[build-dependencies]
-embuild = "0.31.3"
+codegen-units = 1
+debug = 2
+debug-assertions = false
+incremental = false
+opt-level = 3
+lto = 'fat'
+overflow-checks = false

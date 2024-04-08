@@ -1,0 +1,15 @@
+[package]
+name = "tama"
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+embassy-executor = { workspace = true }
+embassy-time = { workspace = true }
+esp-backtrace = { workspace = true }
+esp-hal = { workspace = true }
+esp-println = { workspace = true }
