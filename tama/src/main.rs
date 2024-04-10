@@ -8,6 +8,7 @@ use esp_backtrace as _;
 use esp_hal::{
   clock::ClockControl,
   embassy::{self},
+  gpio::*,
   peripherals::Peripherals,
   prelude::*,
   timer::TimerGroup,
@@ -21,6 +22,16 @@ async fn run() {
   }
 }
 
+#[embassy_executor::task]
+async fn blink(mut led: GpioPin<Output<PushPull>, 10>) {
+  loop {
+    led.set_high().unwrap();
+    Timer::after(Duration::from_millis(1_000)).await;
+    led.set_low().unwrap();
+    Timer::after(Duration::from_millis(1_000)).await;
+  }
+}
+
 #[main]
 async fn main(spawner: Spawner) {
   esp_println::println!("Init!");
@@ -28,13 +39,18 @@ async fn main(spawner: Spawner) {
   let system = peripherals.SYSTEM.split();
   let clocks = ClockControl::boot_defaults(system.clock_control).freeze();
 
+  let io = IO::new(peripherals.GPIO, peripherals.IO_MUX);
+  let led = io.pins.gpio10.into_push_pull_output();
+
   let timg0 = TimerGroup::new(peripherals.TIMG0, &clocks);
   embassy::init(&clocks, timg0);
 
   spawner.spawn(run()).ok();
+  spawner.spawn(blink(led)).ok();
 
   loop {
     esp_println::println!("Bing!");
     Timer::after(Duration::from_millis(5_000)).await;
+    Timer::after(Duration::from_millis(1_000)).await;
   }
 }
