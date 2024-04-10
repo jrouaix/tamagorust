@@ -29,7 +29,7 @@
     "**/temp/**": true
   },
   "rust-analyzer.cargo.extraEnv": {
-    "CARGO_TARGET_DIR": "target/analyzer",
+    "CARGO_TARGET_DIR": "target/analyzer"
   },
   "rust-analyzer.cargo.allTargets": false,
   //----------------------------------------------------------------------
